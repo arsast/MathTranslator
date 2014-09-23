@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 
-void wMTRead(wchar_t* inputFileName, wchar_t* input) {
+void MTRead(wchar_t* inputFileName, wchar_t* input) {
 	
 
 	std::wfstream someFile;
@@ -16,14 +16,26 @@ void wMTRead(wchar_t* inputFileName, wchar_t* input) {
 	someFile.close();
 };
 
-extern void Translate();
-extern void Write();
+extern void MTTranslate();
+void MTWrite(wchar_t* outputFileName, wchar_t* output) {
+	std::wfstream someFile;
+	someFile.open(outputFileName);
+	someFile << output;
+	std::wcout << output << std::endl;
+	someFile.close();
+}
 
 
 int wmain(int argc, wchar_t* argv[]) {
 
+	if (argc != 5) {
+		std::wcout << L"Неверное количество параметров!" << std::endl;
+		return 0;
+	}
+
 	wchar_t* buffer = new wchar_t[1024];
-	wMTRead(argv[1], buffer);
+	MTRead(argv[2], buffer);
+	MTWrite(argv[4], buffer);
 
 	return 0;
 }
