@@ -6,15 +6,26 @@
 #include <fstream>
 #include <string>
 
-void MTRead(wchar_t* inputFileName, wchar_t* input) {
+void MTRead(wchar_t* inputFileName, std::string& input) {
 	
-
-	std::wfstream someFile;
-	someFile.open(inputFileName);
-	someFile >> input;
-	std::wcout << input << std::endl;
+	if( inputFileName == NULL ) {
+		std::cout << "Entre file name, please!" << std::endl;
+		return;
+	}
+	
+	std::ifstream someFile;
+	someFile.open( inputFileName );
+	std::string line;
+	if ( someFile.is_open() )
+	{
+		while ( std::getline( someFile, line ) )
+		{
+			input = input + line;
+		}
+	}
 	someFile.close();
 };
+
 
 extern void MTTranslate();
 void MTWrite(wchar_t* outputFileName, wchar_t* output) {
@@ -34,7 +45,8 @@ int wmain(int argc, wchar_t* argv[]) {
 	}
 
 	wchar_t* buffer = new wchar_t[1024];
-	MTRead(argv[2], buffer);
+	std::string input;
+	MTRead(argv[2], input);
 	MTWrite(argv[4], buffer);
 
 	return 0;
