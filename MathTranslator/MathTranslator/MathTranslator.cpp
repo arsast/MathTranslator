@@ -8,13 +8,10 @@
 
 void wMTRead(wchar_t* inputFileName, wchar_t* input) {
 	
-	if( inputFileName == NULL ) {
-		std::cout << "Entre file name, please!" << std::endl;
-		return;
-	}
+
 	std::wfstream someFile;
 	someFile.open(inputFileName);
-	someFile >> input; // читает до пробела, не все, из файла, где .exe
+	someFile >> input;
 	std::wcout << input << std::endl;
 	someFile.close();
 };
@@ -27,7 +24,7 @@ int wmain(int argc, wchar_t* argv[]) {
 
 	wchar_t* buffer = new wchar_t[1024];
 	wMTRead(argv[1], buffer);
-	
+
 	return 0;
 }
 
