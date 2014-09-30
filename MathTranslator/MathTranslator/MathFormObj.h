@@ -1,5 +1,6 @@
 #include <list>
 #pragma once
+
 enum TOperType { UMINUS, PLUS, MINUS, EQUAL, MULT, DIV, ROOT, POW, MAIN }; //“ип оператора в вершине дерева разбора формулы
 
 
