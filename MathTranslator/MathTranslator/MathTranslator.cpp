@@ -11,19 +11,18 @@
 void MTRead(char* param, char* inputFileName, MathObj* obj) {
 	std::string par(param);
 	if (par == "omath") {
-		ConvertOM(inputFileName, obj);
+		ConvertFromOM(inputFileName, obj);
 	}
 	
 };
 
 
 extern void MTTranslate();
-void MTWrite(wchar_t* outputFileName, wchar_t* output) {
-	std::wfstream someFile;
-	someFile.open(outputFileName);
-	someFile << output;
-	std::wcout << output << std::endl;
-	someFile.close();
+void MTWrite(char* param, char* outputFileName, MathObj* obj) {
+	std::string par(param);
+	if (par == "omath") {
+		ConvertToOM(outputFileName, obj);
+	}
 }
 
 
@@ -37,7 +36,7 @@ int main(int argc, char* argv[]) {
 	
 	FormulaObj obj(MAIN);
 	MTRead(argv[1], argv[2], &obj);
-	//MTWrite(argv[4], buffer);
+	MTWrite(argv[3], argv[4], &obj);
 
 	system("pause");
 	return 0;

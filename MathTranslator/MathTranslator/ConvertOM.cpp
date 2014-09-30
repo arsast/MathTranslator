@@ -9,7 +9,20 @@
 #include <string>
 #include <sstream>
 
-void ConvertElem(TiXmlElement* pElem, MathObj* obj) {
+void ConvertFromOM(char* inputFileName, MathObj* obj) {
+
+	TiXmlDocument doc;
+	doc.LoadFile(inputFileName);
+
+	TiXmlHandle hDoc(&doc);
+	TiXmlElement* pElem;
+
+	pElem = hDoc.FirstChildElement().Element();
+
+	ConvertElemToObj(pElem, obj);
+}
+
+void ConvertElemToObj(TiXmlElement* pElem, MathObj* obj) {
 	for (pElem; pElem; pElem = pElem->NextSiblingElement()) //пробегаемся по всем элементам одного слоя
 	{
 		const std::string pKey = pElem->Value(); //получаем тэг текущей вершины
@@ -32,7 +45,7 @@ void ConvertElem(TiXmlElement* pElem, MathObj* obj) {
 
 		//Если корень
 		if (pKey == "OMOBJ") {
-			ConvertElem(pElem->FirstChildElement(), obj);
+			ConvertElemToObj(pElem->FirstChildElement(), obj);
 		}
 
 		//Если переменная
@@ -52,7 +65,7 @@ void ConvertElem(TiXmlElement* pElem, MathObj* obj) {
 		else if (pKey == "OMA") {
 			FormulaObj* node = new FormulaObj();
 			((FormulaObj*)obj)->params.push_back(node);
-			ConvertElem(pElem->FirstChildElement(), node);
+			ConvertElemToObj(pElem->FirstChildElement(), node);
 		}
 
 		//Если операнд
@@ -67,6 +80,7 @@ void ConvertElem(TiXmlElement* pElem, MathObj* obj) {
 			}
 
 			std::string operand = pAttrib->Value(); // Проверяем тип операнда
+
 			//Если унарный минус
 			if (operand == "unary_minus") {
 				((FormulaObj*)obj)->SetType(UMINUS);
@@ -126,6 +140,7 @@ void ConvertElem(TiXmlElement* pElem, MathObj* obj) {
 			else if (operand == "plusminus") {
 				((FormulaObj*)obj)->SetType(PLUSMINUS);
 			}
+
 			//Если незнакомый символ
 			else {
 				std::cerr << "Error: " << operand.c_str() << " unknown operand!" << std::endl;
@@ -135,17 +150,16 @@ void ConvertElem(TiXmlElement* pElem, MathObj* obj) {
 
 }
 
-void ConvertOM(char* inputFileName, MathObj* obj) {
-
+void ConvertToOM(char* outputFileName, MathObj* obj) {
 	TiXmlDocument doc;
-	doc.LoadFile(inputFileName);
+	TiXmlElement * element = new TiXmlElement("OMOBJ");
+	element->SetAttribute("xmlns", "http://www.openmath.org/OpenMath");
+	doc.LinkEndChild(element);
 
-	TiXmlHandle hDoc(&doc);
-	TiXmlElement* pElem;
+	ConvertObjToElem(element, ((FormulaObj*)obj)->params[0]);
 
-	pElem = hDoc.FirstChildElement().Element();
 
-	ConvertElem(pElem, obj);
-
-	
 }
+
+void ConvertObjToElem(TiXmlElement* pElem, MathObj* obj) {}
+
