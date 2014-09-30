@@ -36,6 +36,9 @@
     <ClInclude Include="ConvertOM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MathML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConvertOM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MathML.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
