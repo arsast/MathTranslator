@@ -3,7 +3,7 @@
 #include "tinyxml.h"
 #pragma once
 
-enum TNodeType { UMINUS, PLUS, MINUS, EQUAL, MULT, DIV, ROOT, POW, ABS, SUM, PROD, MAIN, NOTYPE}; //Тип оператора в вершине дерева разбора формулы
+enum TNodeType { UMINUS, PLUS, MINUS, EQUAL, MULT, DIV, ROOT, POW, ABS, SUM, PROD, PLUSMINUS, MAIN, NOTYPE}; //Тип оператора в вершине дерева разбора формулы
 
 
 //Основной тип формулы
