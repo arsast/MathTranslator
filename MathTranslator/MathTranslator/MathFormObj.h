@@ -1,17 +1,37 @@
-#include <list>
+#include <vector>
+#include <string>
+#include "tinyxml.h"
 #pragma once
 
-enum TOperType { UMINUS, PLUS, MINUS, EQUAL, MULT, DIV, ROOT, POW, MAIN }; //Тип оператора в вершине дерева разбора формулы
+enum TNodeType { UMINUS, PLUS, MINUS, EQUAL, MULT, DIV, ROOT, POW, MAIN, PARAM}; //Тип оператора в вершине дерева разбора формулы
 
 
 //Основной тип формулы
-class MathFormulaObj {
+class MathObj {
 public:
-	TOperType type;
-	std::list<MathFormulaObj*> params;
+	virtual ~MathObj() {};
+};
 
-	MathFormulaObj(TOperType);
-	virtual ~MathFormulaObj() {}
+class FormulaObj : public MathObj {
+private:
+	TNodeType type;
+public:
+	std::vector<MathObj*> params;
+
+	FormulaObj(TNodeType);
+	~FormulaObj();
+
+	TNodeType GetType();
+};
+
+class ParamObj : public MathObj {
+private:
+	std::string val;
+public:
+	ParamObj(std::string);
+	~ParamObj();
+
+	std::string GetVal();
 };
 
 

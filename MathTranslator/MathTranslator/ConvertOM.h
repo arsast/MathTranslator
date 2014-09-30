@@ -1,3 +1,5 @@
 #include "MathFormObj.h"
 
-void ConvertOM(char*, MathFormulaObj*);
+
+void ConvertElem(TiXmlElement*, MathObj*); // Конвертирует в MathObj, принимая на вход указатель на текущий элемент DOM
+void ConvertOM(char*, MathObj*); //Конвертирует в MathObj, принимая на вход название файла

@@ -8,9 +8,9 @@
 #include "MathFormObj.h"
 #include "ConvertOM.h"
 
-void MTRead(char* param, char* inputFileName, MathFormulaObj* obj) {
+void MTRead(char* param, char* inputFileName, MathObj* obj) {
 	std::string par(param);
-	if (param == "omath") {
+	if (par == "omath") {
 		ConvertOM(inputFileName, obj);
 	}
 	
@@ -30,15 +30,16 @@ void MTWrite(wchar_t* outputFileName, wchar_t* output) {
 int main(int argc, char* argv[]) {
 
 	if (argc != 5) {
-		std::wcout << "Неверное количество параметров!" << std::endl;
+		std::cout << "Nevernoe kolichestvo parametrov!" << std::endl;
+		system("pause");
 		return 0;
 	}
 	
-	MathFormulaObj obj(MAIN);
-
+	FormulaObj obj(MAIN);
 	MTRead(argv[1], argv[2], &obj);
 	//MTWrite(argv[4], buffer);
 
+	system("pause");
 	return 0;
 }
 
