@@ -5,25 +5,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "MathFormObj.h"
+#include "ConvertOM.h"
 
-void MTRead(wchar_t* inputFileName, std::string& input) {
-	
-	if( inputFileName == NULL ) {
-		std::cout << "Entre file name, please!" << std::endl;
-		return;
+void MTRead(char* param, char* inputFileName, MathFormulaObj* obj) {
+	std::string par(param);
+	if (param == "omath") {
+		ConvertOM(inputFileName, obj);
 	}
 	
-	std::ifstream someFile;
-	someFile.open( inputFileName );
-	std::string line;
-	if ( someFile.is_open() )
-	{
-		while ( std::getline( someFile, line ) )
-		{
-			input = input + line;
-		}
-	}
-	someFile.close();
 };
 
 
@@ -37,17 +27,17 @@ void MTWrite(wchar_t* outputFileName, wchar_t* output) {
 }
 
 
-int wmain(int argc, wchar_t* argv[]) {
+int main(int argc, char* argv[]) {
 
 	if (argc != 5) {
-		std::wcout << L"Неверное количество параметров!" << std::endl;
+		std::wcout << "Неверное количество параметров!" << std::endl;
 		return 0;
 	}
+	
+	MathFormulaObj obj(MAIN);
 
-	wchar_t* buffer = new wchar_t[1024];
-	std::string input;
-	MTRead(argv[2], input);
-	MTWrite(argv[4], buffer);
+	MTRead(argv[1], argv[2], &obj);
+	//MTWrite(argv[4], buffer);
 
 	return 0;
 }
