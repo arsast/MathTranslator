@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 	
-	FormulaObj obj(MAIN);
+	FormulaObj obj(NT_MAIN);
 	MTRead(argv[1], argv[2], &obj);
 	MTWrite(argv[3], argv[4], &obj);
 

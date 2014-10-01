@@ -1,7 +1,6 @@
-/*
-Автор: Николай Левшин
-Назначение: Инициализация методов конвертации из формата OpenMath в 
-*/
+//Автор: Николай Левшин
+//Назначение: Инициализация методов конвертации между форматами OpenMath в MathObj
+
 
 #include "ConvertOM.h"
 #include "tinyxml.h"
@@ -30,6 +29,8 @@ void ConvertElemToObj(TiXmlElement* pElem, MathObj* obj) {
 
 		TiXmlAttribute* pAttrib = pElem->FirstAttribute();//получем первый атрибут тэга, если нет, то NULL
 
+
+		/*
 		//----------------------------------------------------------------------------------------------------------------------------
 		// Данный код ТОЛЬКО ДЛЯ ПРОВЕРКИ корректного обхода дерева и проверки того, что мы умеем выжимать всю информацию из документа!!!
 		std::cout << pKey.c_str() << std::endl;
@@ -42,6 +43,8 @@ void ConvertElemToObj(TiXmlElement* pElem, MathObj* obj) {
 		}
 		std::cout << std::endl;
 		//----------------------------------------------------------------------------------------------------------------------------
+		*/
+
 
 		//Если корень
 		if (pKey == "OMOBJ") {
@@ -83,62 +86,62 @@ void ConvertElemToObj(TiXmlElement* pElem, MathObj* obj) {
 
 			//Если унарный минус
 			if (operand == "unary_minus") {
-				((FormulaObj*)obj)->SetType(UMINUS);
+				((FormulaObj*)obj)->SetType(NT_UMINUS);
 			}
 
 			//Если плюс
 			else if (operand == "plus") {
-				((FormulaObj*)obj)->SetType(PLUS);
+				((FormulaObj*)obj)->SetType(NT_PLUS);
 			}
 
 			//Если минус
 			else if (operand == "minus") {
-				((FormulaObj*)obj)->SetType(MINUS);
+				((FormulaObj*)obj)->SetType(NT_MINUS);
 			}
 
 			//Если умножение
 			else if (operand == "times") {
-				((FormulaObj*)obj)->SetType(MULT);
+				((FormulaObj*)obj)->SetType(NT_MULT);
 			}
 
 			//Если деление
 			else if (operand == "divide") {
-				((FormulaObj*)obj)->SetType(DIV);
+				((FormulaObj*)obj)->SetType(NT_DIV);
 			}
 
 			//Если возведение в степень
 			else if (operand == "power") {
-				((FormulaObj*)obj)->SetType(POW);
+				((FormulaObj*)obj)->SetType(NT_POW);
 			}
 
 			//Если модуль
 			else if (operand == "abs") {
-				((FormulaObj*)obj)->SetType(ABS);
+				((FormulaObj*)obj)->SetType(NT_ABS);
 			}
 
 			//Если корень
 			else if (operand == "root") {
-				((FormulaObj*)obj)->SetType(ROOT);
+				((FormulaObj*)obj)->SetType(NT_ROOT);
 			}
 
 			//Если суммирование
 			else if (operand == "sum") {
-				((FormulaObj*)obj)->SetType(SUM);
+				((FormulaObj*)obj)->SetType(NT_SUM);
 			}
 
 			//Если перемножение
 			else if (operand == "product") {
-				((FormulaObj*)obj)->SetType(PROD);
+				((FormulaObj*)obj)->SetType(NT_PROD);
 			}
 
 			//Ecли равенство
 			else if (operand == "eq") {
-				((FormulaObj*)obj)->SetType(EQUAL);
+				((FormulaObj*)obj)->SetType(NT_EQUAL);
 			}
 
 			//Если плюсминус
 			else if (operand == "plusminus") {
-				((FormulaObj*)obj)->SetType(PLUSMINUS);
+				((FormulaObj*)obj)->SetType(NT_PLUSMINUS);
 			}
 
 			//Если незнакомый символ
@@ -161,5 +164,9 @@ void ConvertToOM(char* outputFileName, MathObj* obj) {
 
 }
 
-void ConvertObjToElem(TiXmlElement* pElem, MathObj* obj) {}
+void ConvertObjToElem( TiXmlElement* pElem, MathObj* obj ) 
+{
+	std::string classType = typeid( *obj ).name();
+	std::cout << classType.c_str() << std::endl;
+}
 
