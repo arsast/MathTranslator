@@ -6,7 +6,7 @@
 FormulaObj::FormulaObj() {}
 
 FormulaObj::FormulaObj( TNodeType t ) : type(t) 
-{ 
+{
 	params.clear(); 
 }
 

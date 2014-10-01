@@ -51,6 +51,7 @@ private:
 public:
 	ParamObj();
 	ParamObj(std::string);
+	void SetVal(std::string s){ val = s; }
 	~ParamObj();
 
 	std::string GetVal();
