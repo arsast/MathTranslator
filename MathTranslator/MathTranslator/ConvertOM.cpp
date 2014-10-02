@@ -41,13 +41,21 @@ void ConvertElemToObj( TiXmlElement* pElem, MathObj* obj ) {
 			((FormulaObj*)obj)->params.push_back( node );
 		}
 
-		//Если число
+		//Если целое число
 		else if( pKey == "OMI" ) 
 		{
 			ParamObj* node = new ParamObj( pElem->GetText() );
 			((FormulaObj*)obj)->params.push_back( node );
 		}
 
+        //Если десятичное число
+        else if( pKey == "OMF" )
+        {
+            TiXmlAttribute* pAttrib = pElem->FirstAttribute();
+            ParamObj* node = new ParamObj( pAttrib->Value( ) );
+            ( (FormulaObj*) obj )->params.push_back( node );
+
+        }
 		//Если конструкция, содержащая массив операций
 		else if( pKey == "OMA" ) 
 		{
