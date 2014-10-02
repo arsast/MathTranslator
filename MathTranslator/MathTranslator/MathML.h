@@ -7,10 +7,13 @@
 #include <iostream>
 using namespace std;
 
-class MathMLParser{
+class MathMLParser
+{
 private:
 	MathObj* root;
-	MathObj* addElemToData(TiXmlElement* elem, MathObj* place);
+	void addElemToData(TiXmlElement* elem, MathObj* place);
+	TNodeType readBinarOperation(TiXmlElement* elem);
+	void test(MathObj* temp);
 public:
 	void SetData(MathObj* newRoot){ root = newRoot; }
 	MathObj* GetData(){ return root; }

@@ -7,6 +7,7 @@
 #include <string>
 #include "MathFormObj.h"
 #include "ConvertOM.h"
+#include "MathML.h"
 
 void MTRead( char* param, char* inputFileName, MathObj* obj ) 
 {
