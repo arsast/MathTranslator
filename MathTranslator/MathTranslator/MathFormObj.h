@@ -7,21 +7,23 @@
 #pragma once
 
 enum TNodeType { 
-	NT_UMINUS, 
-	NT_PLUS, 
-	NT_MINUS, 
-	NT_EQUAL, 
-	NT_MULT, 
-	NT_DIV, 
-	NT_ROOT, 
-	NT_POW, 
-	NT_ABS, 
-	NT_SUM, 
-	NT_PROD, 
-	NT_PLUSMINUS, 
+	NT_UMINUS,  //унарный минус
+	NT_PLUS,    //плюс
+	NT_MINUS,   //минус
+	NT_EQUAL,   //равно
+	NT_MULTCM,  //коммутативное умножение
+    NT_MULTNCM, //не коммутативное умножение
+	NT_DIV,     //деление
+	NT_ROOT,    //корень n-ой степени, первый потомок - степень, если потомок один, то по умолчанию квадратный корень
+	NT_POW,     //возведение в степень, первый потомок - основание
+	NT_ABS,     //вз€тие модул€
+	NT_SUM,     //оператор суммировани€
+	NT_PROD,    //оператор перемножени€, как ѕ
+	NT_PLUSMINUS,//плюсминус
+ 
 
-	NT_MAIN, 
-	NT_NOTYPE,
+	NT_MAIN,    //»дентификатор того, что это корень нашего MathObj
+	NT_NOTYPE,  //Ѕезтипна€ вершина
 }; //“ип оператора в вершине дерева разбора формулы
 
 

@@ -8,4 +8,4 @@ void ConvertElemToObj( TiXmlElement*, MathObj* ); // Конвертирует в MathObj, при
 void ConvertToOM( char*, MathObj* ); // Конвертирует MathObj в OpenMath, принимая на вход имя файла, в который записываем
 void ConvertObjToElem( TiXmlElement*, MathObj* ); // Конвертирует в DOM, принимая на вход указатель на текущий элемент MathObj
 void SetFormulaElementAttribute( TiXmlElement*, const TNodeType ); // Устанавливает элементу DOM нужные атрибуты
-void SetFormulaObjType( FormulaObj*, const std::string ); // Устанавливает элементу FormulaObj 
+void SetFormulaObjType( FormulaObj*, std::string*, std::string* ); // Устанавливает элементу FormulaObj нужный флаг в зависимости от атрибутов 

@@ -27,7 +27,7 @@ TNodeType MathMLParser::readBinarOperation(TiXmlElement* elem)
 	}
 	if (id == "*")
 	{
-		return NT_MULT;
+		return NT_MULTCM;
 	}
 	if ((int)id[0] == (int)'±')
 	{
@@ -67,7 +67,7 @@ void MathMLParser::addElemToData(TiXmlElement* elem, MathObj* place)
 
 			if (elem->Value() != "mo")
 			{
-				((FormulaObj*)place)->SetType(NT_MULT);
+				((FormulaObj*)place)->SetType(NT_MULTCM);
 				addElemToData(elem, secondArg);
 			}
 			else

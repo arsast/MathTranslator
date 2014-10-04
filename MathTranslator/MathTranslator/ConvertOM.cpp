@@ -68,7 +68,16 @@ void ConvertElemToObj( TiXmlElement* pElem, MathObj* obj ) {
 		else if( pKey == "OMS" ) 
 		{
 			TiXmlAttribute* pAttrib = pElem->FirstAttribute();
-			std::string name = pAttrib->Name();
+			std::string name = pAttrib->Name(); // Тип атрибута
+
+            //Находим атрибут, отвечающий за название словаря, содержащего наш атрибут
+            while( name != "cd" )
+            {
+                pAttrib = pAttrib->Next( );
+                name = pAttrib->Name( );
+            }
+
+            std::string cd = pAttrib->Value(); // получаем требуемый словарь
 
 			//Находим атрибут, отвечающий за тип операнда
 			while( name != "name" ) 
@@ -77,8 +86,8 @@ void ConvertElemToObj( TiXmlElement* pElem, MathObj* obj ) {
 				name = pAttrib->Name();
 			}
 
-			std::string operand = pAttrib->Value(); // Проверяем тип операнда
-			SetFormulaObjType((FormulaObj*)obj, operand);
+			std::string operand = pAttrib->Value(); // Получаем тип операнда
+			SetFormulaObjType((FormulaObj*)obj, &cd, &operand);
 		}
 	}
 
@@ -165,10 +174,14 @@ void SetFormulaElementAttribute( TiXmlElement* pElem, TNodeType type )
 		pElem->SetAttribute( "cd", "relation1" );
 		pElem->SetAttribute( "name", "eq" );
 		break;
-	case NT_MULT:
+	case NT_MULTNCM:
 		pElem->SetAttribute( "cd", "arith1" );
 		pElem->SetAttribute( "name", "times" );
 		break;
+    case NT_MULTCM:
+        pElem->SetAttribute( "cd", "arith2" );
+        pElem->SetAttribute( "name", "times" );
+        break;
 	case NT_DIV:
 		pElem->SetAttribute( "cd", "arith1" );
 		pElem->SetAttribute( "name", "divide" );
@@ -202,77 +215,78 @@ void SetFormulaElementAttribute( TiXmlElement* pElem, TNodeType type )
 	}
 }
 
-void SetFormulaObjType( FormulaObj* obj, const std::string operand )
+void SetFormulaObjType( FormulaObj* obj, std::string* cd, std::string* operand)
 {
-
 	//Если унарный минус
-	if (operand == "unary_minus")
+	if (*operand == "unary_minus")
 	{
 		obj->SetType(NT_UMINUS);
 	}
 
 	//Если плюс
-	else if (operand == "plus")
+	else if (*operand == "plus")
 	{
 		obj->SetType(NT_PLUS);
 	}
 
 	//Если минус
-	else if (operand == "minus")
+	else if (*operand == "minus")
 	{
 		obj->SetType(NT_MINUS);
 	}
 
 	//Если умножение
-	else if (operand == "times")
+	else if (*operand == "times")
 	{
-		obj->SetType(NT_MULT);
+        if( *cd == "arith1" ) { obj->SetType( NT_MULTNCM ); }
+        else if( *cd == "arith2" ) { obj->SetType( NT_MULTCM ); }
+        else std::cerr << "Error: Unknown param. cd: " << cd->c_str() << ", param: " << operand->c_str() << std::endl;
 	}
 
 	//Если деление
-	else if (operand == "divide")
+	else if (*operand == "divide")
 	{
 		obj->SetType(NT_DIV);
 	}
 
 	//Если возведение в степень
-	else if (operand == "power")
+	else if (*operand == "power")
 	{
 		obj->SetType(NT_POW);
 	}
 
 	//Если модуль
-	else if (operand == "abs")
+	else if (*operand == "abs")
 	{
 		obj->SetType(NT_ABS);
 	}
 
 	//Если корень
-	else if (operand == "root")
+	else if (*operand == "root")
 	{
 		obj->SetType(NT_ROOT);
 	}
 
 	//Если суммирование
-	else if (operand == "sum")
+	else if (*operand == "sum")
 	{
 		obj->SetType(NT_SUM);
 	}
 
 	//Если перемножение
-	else if (operand == "product")
+	else if (*operand == "product")
 	{
 		obj->SetType(NT_PROD);
 	}
 
 	//Ecли равенство
-	else if (operand == "eq")
+	else if (*operand == "eq")
 	{
 		obj->SetType(NT_EQUAL);
 	}
 
 	//Если плюсминус
-	else if (operand == "plusminus")
+	else if (*operand == "plusminus")
 	{
 		obj->SetType(NT_PLUSMINUS);
 	}
@@ -280,7 +294,7 @@ void SetFormulaObjType( FormulaObj* obj, const std::string operand )
 	//Если незнакомый символ
 	else
 	{
-		std::cerr << "Error: " << operand.c_str() << " unknown operand!" << std::endl;
+		std::cerr << "Error: Unknown param. cd: " << cd->c_str() << ", param: " << operand->c_str() << std::endl;
 	}
 }
 
