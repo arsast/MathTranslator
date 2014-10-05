@@ -17,10 +17,8 @@ void MTRead( char* param, char* inputFileName, MathObj* obj )
 		ConvertFromOM( inputFileName, obj );
 	}
 	
-};
+}
 
-
-extern void MTTranslate();
 void MTWrite( char* param, char* outputFileName, MathObj* obj ) 
 {
 	std::string par( param );
