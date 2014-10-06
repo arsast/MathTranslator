@@ -11,7 +11,7 @@ class MathMLParser
 {
 private:
 	MathObj* root;
-	void addElemToData(TiXmlElement* elem, MathObj* place);
+	void addElemToData(TiXmlElement* elem, vector<MathObj*>::iterator place);
 	TNodeType readBinarOperation(TiXmlElement* elem);
 	void test(MathObj* temp);
 public:
