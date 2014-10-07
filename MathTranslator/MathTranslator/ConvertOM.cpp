@@ -156,7 +156,7 @@ void ConvertToOM( char* outputFileName, MathObj* obj )
 void ConvertObjToElem( AttrCollection* attrs, TiXmlElement* pElem, MathObj* obj ) 
 {
 	std::string objType = typeid( *obj ).name();
-	std::cout << objType.c_str() << std::endl;
+	// std::cout << objType.c_str() << std::endl;
 	if( objType == "class FormulaObj" ) 
     {
 		TiXmlElement* element = new TiXmlElement( "OMA" );
@@ -228,6 +228,6 @@ void SetFormulaObjType( IdCollection* ids, FormulaObj* obj, std::string* cd, std
     }
 
     obj->SetType( TNodeType( (*ids)[*operand].second ) );
-    std::cout << *operand << " " << (*ids)[*operand].second << std::endl;
+    //std::cout << *operand << " " << (*ids)[*operand].second << std::endl;
 }
 
