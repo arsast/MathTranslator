@@ -1,4 +1,4 @@
-#include"MathML.h"
+﻿#include"MathML.h"
 
 void MathMLParser::Pars(char* file)
 {
@@ -33,7 +33,7 @@ TNodeType MathMLParser::readBinarOperation(TiXmlElement* elem)
 	{
 		return NT_MULTCM;
 	}
-	if ((int)id[0] == (int)'�')
+	if ((int)id[0] == (int)'±')
 	{
 		return NT_PLUSMINUS;
 	}

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "MathFormObj.h"
 #include "targetver.h"
 #include "tinystr.h"

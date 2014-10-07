@@ -1,5 +1,5 @@
-// Автор: Николай Левшин
-// Назначение: Объявление функций, использующихся для конвертации между форматами OpenMath и MathObj
+п»ї// РђРІС‚РѕСЂ: РќРёРєРѕР»Р°Р№ Р›РµРІС€РёРЅ
+// РќР°Р·РЅР°С‡РµРЅРёРµ: РћР±СЉСЏРІР»РµРЅРёРµ С„СѓРЅРєС†РёР№, РёСЃРїРѕР»СЊР·СѓСЋС‰РёС…СЃСЏ РґР»СЏ РєРѕРЅРІРµСЂС‚Р°С†РёРё РјРµР¶РґСѓ С„РѕСЂРјР°С‚Р°РјРё OpenMath Рё MathObj
 
 #include "MathFormObj.h"
 #include <map>
@@ -7,11 +7,11 @@
 typedef std::map<std::string, std::pair<std::string, int>> IdCollection;
 typedef std::map<int, std::pair<std::string, std::string>> AttrCollection;
 
-void ConvertFromOM( char*, MathObj* ); // Конвертирует OpenMath в MathObj, принимая на вход имя файла, откуда читаем
-void ConvertElemToObj( IdCollection*, TiXmlElement*, MathObj* ); // Конвертирует в MathObj, принимая на вход указатель на текущий элемент DOM
-void ConvertToOM( char*, MathObj* ); // Конвертирует MathObj в OpenMath, принимая на вход имя файла, в который записываем
-void ConvertObjToElem( AttrCollection*, TiXmlElement*, MathObj* ); // Конвертирует в DOM, принимая на вход указатель на текущий элемент MathObj
-void SetFormulaElementAttribute( AttrCollection*, TiXmlElement*, const TNodeType ); // Устанавливает элементу DOM нужные атрибуты
-void SetFormulaObjType( IdCollection*, FormulaObj*, std::string*, std::string* ); // Устанавливает элементу FormulaObj нужный флаг в зависимости от атрибутов 
-void LoadIdTable( IdCollection* ); // Подгружает таблицу операторов
-void LoadAttrTable( AttrCollection* ); // Подгружает таблицу атрибутов
+void ConvertFromOM( char*, MathObj* ); // РљРѕРЅРІРµСЂС‚РёСЂСѓРµС‚ OpenMath РІ MathObj, РїСЂРёРЅРёРјР°СЏ РЅР° РІС…РѕРґ РёРјСЏ С„Р°Р№Р»Р°, РѕС‚РєСѓРґР° С‡РёС‚Р°РµРј
+void ConvertElemToObj( IdCollection*, TiXmlElement*, MathObj* ); // РљРѕРЅРІРµСЂС‚РёСЂСѓРµС‚ РІ MathObj, РїСЂРёРЅРёРјР°СЏ РЅР° РІС…РѕРґ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚ DOM
+void ConvertToOM( char*, MathObj* ); // РљРѕРЅРІРµСЂС‚РёСЂСѓРµС‚ MathObj РІ OpenMath, РїСЂРёРЅРёРјР°СЏ РЅР° РІС…РѕРґ РёРјСЏ С„Р°Р№Р»Р°, РІ РєРѕС‚РѕСЂС‹Р№ Р·Р°РїРёСЃС‹РІР°РµРј
+void ConvertObjToElem( AttrCollection*, TiXmlElement*, MathObj* ); // РљРѕРЅРІРµСЂС‚РёСЂСѓРµС‚ РІ DOM, РїСЂРёРЅРёРјР°СЏ РЅР° РІС…РѕРґ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° С‚РµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚ MathObj
+void SetFormulaElementAttribute( AttrCollection*, TiXmlElement*, const TNodeType ); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ СЌР»РµРјРµРЅС‚Сѓ DOM РЅСѓР¶РЅС‹Рµ Р°С‚СЂРёР±СѓС‚С‹
+void SetFormulaObjType( IdCollection*, FormulaObj*, std::string*, std::string* ); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ СЌР»РµРјРµРЅС‚Сѓ FormulaObj РЅСѓР¶РЅС‹Р№ С„Р»Р°Рі РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ Р°С‚СЂРёР±СѓС‚РѕРІ 
+void LoadIdTable( IdCollection* ); // РџРѕРґРіСЂСѓР¶Р°РµС‚ С‚Р°Р±Р»РёС†Сѓ РѕРїРµСЂР°С‚РѕСЂРѕРІ
+void LoadAttrTable( AttrCollection* ); // РџРѕРґРіСЂСѓР¶Р°РµС‚ С‚Р°Р±Р»РёС†Сѓ Р°С‚СЂРёР±СѓС‚РѕРІ

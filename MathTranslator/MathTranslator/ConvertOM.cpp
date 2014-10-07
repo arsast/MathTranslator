@@ -1,5 +1,5 @@
-// Автор: Николай Левшин
-// Назначение: Инициализация функций, использующихся для конвертации между форматами OpenMath и MathObj
+п»ї// РђРІС‚РѕСЂ: РќРёРєРѕР»Р°Р№ Р›РµРІС€РёРЅ
+// РќР°Р·РЅР°С‡РµРЅРёРµ: РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёР№, РёСЃРїРѕР»СЊР·СѓСЋС‰РёС…СЃСЏ РґР»СЏ РєРѕРЅРІРµСЂС‚Р°С†РёРё РјРµР¶РґСѓ С„РѕСЂРјР°С‚Р°РјРё OpenMath Рё MathObj
 
 #include "ConvertOM.h"
 #include "tinyxml.h"
@@ -11,15 +11,15 @@
 
 void LoadIdTable( IdCollection* ids )
 {
-    std::ifstream fin( "OMTable.txt" ); //  в данном файле содержится таблица соответствия атрибутов операндов идентификаторам
+    std::ifstream fin( "OMTable.txt" ); //  РІ РґР°РЅРЅРѕРј С„Р°Р№Р»Рµ СЃРѕРґРµСЂР¶РёС‚СЃСЏ С‚Р°Р±Р»РёС†Р° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ РѕРїРµСЂР°РЅРґРѕРІ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР°Рј
     std::string type, contDict, name;
     int id;
-    while( fin ) // считываем файл и заполняем контейнер данными из таблицы
+    while( fin ) // СЃС‡РёС‚С‹РІР°РµРј С„Р°Р№Р» Рё Р·Р°РїРѕР»РЅСЏРµРј РєРѕРЅС‚РµР№РЅРµСЂ РґР°РЅРЅС‹РјРё РёР· С‚Р°Р±Р»РёС†С‹
     {
         fin >> id >> type >> contDict >> name;
         if( fin )
         {
-            if( name == "times" ) // так как умножения два, то пока что такой костыль.
+            if( name == "times" ) // С‚Р°Рє РєР°Рє СѓРјРЅРѕР¶РµРЅРёСЏ РґРІР°, С‚Рѕ РїРѕРєР° С‡С‚Рѕ С‚Р°РєРѕР№ РєРѕСЃС‚С‹Р»СЊ.
             {
                 if( contDict == "arith1" )
                 {
@@ -40,10 +40,10 @@ void LoadIdTable( IdCollection* ids )
 }
 void LoadAttrTable( AttrCollection* attrs )
 {
-    std::ifstream fin( "OMTable.txt" ); //  в данном файле содержится таблица соответствия атрибутов операндов идентификаторам
+    std::ifstream fin( "OMTable.txt" ); //  РІ РґР°РЅРЅРѕРј С„Р°Р№Р»Рµ СЃРѕРґРµСЂР¶РёС‚СЃСЏ С‚Р°Р±Р»РёС†Р° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ РѕРїРµСЂР°РЅРґРѕРІ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР°Рј
     std::string type, contDict, name;
     int id;
-    while( fin ) // считываем файл и заполняем контейнер данными из таблицы
+    while( fin ) // СЃС‡РёС‚С‹РІР°РµРј С„Р°Р№Р» Рё Р·Р°РїРѕР»РЅСЏРµРј РєРѕРЅС‚РµР№РЅРµСЂ РґР°РЅРЅС‹РјРё РёР· С‚Р°Р±Р»РёС†С‹
     {
         fin >> id >> type >> contDict >> name;
         if( fin )
@@ -70,18 +70,18 @@ void ConvertFromOM( char* inputFileName, MathObj* obj )
 	ConvertElemToObj(&ids, pElem, obj );
 }
 void ConvertElemToObj( IdCollection* ids, TiXmlElement* pElem, MathObj* obj ) {
-	for( pElem; pElem; pElem = pElem->NextSiblingElement() ) //пробегаемся по всем элементам одного слоя
+	for( pElem; pElem; pElem = pElem->NextSiblingElement() ) //РїСЂРѕР±РµРіР°РµРјСЃСЏ РїРѕ РІСЃРµРј СЌР»РµРјРµРЅС‚Р°Рј РѕРґРЅРѕРіРѕ СЃР»РѕСЏ
 	{
-		const std::string pKey = pElem->Value(); //получаем тэг текущей вершины
-		const char *pText = pElem->GetText(); //получаем содержание тега, если оно есть, иначе NULL
+		const std::string pKey = pElem->Value(); //РїРѕР»СѓС‡Р°РµРј С‚СЌРі С‚РµРєСѓС‰РµР№ РІРµСЂС€РёРЅС‹
+		const char *pText = pElem->GetText(); //РїРѕР»СѓС‡Р°РµРј СЃРѕРґРµСЂР¶Р°РЅРёРµ С‚РµРіР°, РµСЃР»Рё РѕРЅРѕ РµСЃС‚СЊ, РёРЅР°С‡Рµ NULL
 
-		//Если корень
+		//Р•СЃР»Рё РєРѕСЂРµРЅСЊ
 		if( pKey == "OMOBJ" ) 
 		{
 			ConvertElemToObj( ids, pElem->FirstChildElement(), obj );
 		}
 
-		//Если переменная
+		//Р•СЃР»Рё РїРµСЂРµРјРµРЅРЅР°СЏ
 		else if( pKey == "OMV" ) 
 		{
 			TiXmlAttribute* pAttrib = pElem->FirstAttribute();
@@ -89,14 +89,14 @@ void ConvertElemToObj( IdCollection* ids, TiXmlElement* pElem, MathObj* obj ) {
             static_cast<FormulaObj*>( obj )->params.push_back( node );
 		}
 
-		//Если целое число
+		//Р•СЃР»Рё С†РµР»РѕРµ С‡РёСЃР»Рѕ
 		else if( pKey == "OMI" ) 
 		{
 			ParamObj* node = new ParamObj( pElem->GetText() );
             static_cast<FormulaObj*>( obj )->params.push_back( node );
 		}
 
-        //Если десятичное число
+        //Р•СЃР»Рё РґРµСЃСЏС‚РёС‡РЅРѕРµ С‡РёСЃР»Рѕ
         else if( pKey == "OMF" )
         {
             TiXmlAttribute* pAttrib = pElem->FirstAttribute();
@@ -104,7 +104,7 @@ void ConvertElemToObj( IdCollection* ids, TiXmlElement* pElem, MathObj* obj ) {
             static_cast<FormulaObj*>( obj )->params.push_back( node );
 
         }
-		//Если конструкция, содержащая массив операций
+		//Р•СЃР»Рё РєРѕРЅСЃС‚СЂСѓРєС†РёСЏ, СЃРѕРґРµСЂР¶Р°С‰Р°СЏ РјР°СЃСЃРёРІ РѕРїРµСЂР°С†РёР№
 		else if( pKey == "OMA" ) 
 		{
 			FormulaObj* node = new FormulaObj();
@@ -112,29 +112,29 @@ void ConvertElemToObj( IdCollection* ids, TiXmlElement* pElem, MathObj* obj ) {
 			ConvertElemToObj( ids, pElem->FirstChildElement(), node );
 		}
 
-		//Если операнд
+		//Р•СЃР»Рё РѕРїРµСЂР°РЅРґ
 		else if( pKey == "OMS" ) 
 		{
 			TiXmlAttribute* pAttrib = pElem->FirstAttribute();
-			std::string name = pAttrib->Name(); // Тип атрибута
+			std::string name = pAttrib->Name(); // РўРёРї Р°С‚СЂРёР±СѓС‚Р°
 
-            //Находим атрибут, отвечающий за название словаря, содержащего наш атрибут
+            //РќР°С…РѕРґРёРј Р°С‚СЂРёР±СѓС‚, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° РЅР°Р·РІР°РЅРёРµ СЃР»РѕРІР°СЂСЏ, СЃРѕРґРµСЂР¶Р°С‰РµРіРѕ РЅР°С€ Р°С‚СЂРёР±СѓС‚
             while( name != "cd" )
             {
                 pAttrib = pAttrib->Next( );
                 name = pAttrib->Name( );
             }
 
-            std::string cd = pAttrib->Value(); // получаем требуемый словарь
+            std::string cd = pAttrib->Value(); // РїРѕР»СѓС‡Р°РµРј С‚СЂРµР±СѓРµРјС‹Р№ СЃР»РѕРІР°СЂСЊ
 
-			//Находим атрибут, отвечающий за тип операнда
+			//РќР°С…РѕРґРёРј Р°С‚СЂРёР±СѓС‚, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° С‚РёРї РѕРїРµСЂР°РЅРґР°
 			while( name != "name" ) 
 			{
 				pAttrib = pAttrib->Next();
 				name = pAttrib->Name();
 			}
 
-			std::string operand = pAttrib->Value(); // Получаем тип операнда
+			std::string operand = pAttrib->Value(); // РџРѕР»СѓС‡Р°РµРј С‚РёРї РѕРїРµСЂР°РЅРґР°
             SetFormulaObjType( ids, static_cast<FormulaObj*>( obj ), &cd, &operand );
 		}
 	}
@@ -177,9 +177,9 @@ void ConvertObjToElem( AttrCollection* attrs, TiXmlElement* pElem, MathObj* obj 
     else if( objType == "class ParamObj" )
     {
         std::string val = ( (ParamObj*) obj )->GetVal();
-        if( val[0] > 47 && val[0] < 58 ) // Если это число
+        if( val[0] > 47 && val[0] < 58 ) // Р•СЃР»Рё СЌС‚Рѕ С‡РёСЃР»Рѕ
         {
-            if( val.find( '.' ) != std::string::npos ) // И в нем есть точка
+            if( val.find( '.' ) != std::string::npos ) // Р РІ РЅРµРј РµСЃС‚СЊ С‚РѕС‡РєР°
             {
                 TiXmlElement* element = new TiXmlElement( "OMF" );
                 element->SetAttribute( "dec", val.c_str() );
@@ -215,7 +215,7 @@ void SetFormulaElementAttribute( AttrCollection* attrs, TiXmlElement* pElem, TNo
 }
 void SetFormulaObjType( IdCollection* ids, FormulaObj* obj, std::string* cd, std::string* operand)
 {
-    if( *operand == "times" )// так как умножения два, то такой вот костыль, пару к нему ищи в функции LoadIdTable
+    if( *operand == "times" )// С‚Р°Рє РєР°Рє СѓРјРЅРѕР¶РµРЅРёСЏ РґРІР°, С‚Рѕ С‚Р°РєРѕР№ РІРѕС‚ РєРѕСЃС‚С‹Р»СЊ, РїР°СЂСѓ Рє РЅРµРјСѓ РёС‰Рё РІ С„СѓРЅРєС†РёРё LoadIdTable
     {
         if( *cd == "arith1" )
         {
