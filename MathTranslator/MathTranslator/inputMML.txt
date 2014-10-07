@@ -6,7 +6,6 @@
   <mfrac>
     <mrow>
       <mrow>
-        <mo>-</mo>
         <mi>b</mi>
         <mo>±</mo>
       </mrow>

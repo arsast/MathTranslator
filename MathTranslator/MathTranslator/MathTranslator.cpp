@@ -16,6 +16,12 @@ void MTRead( char* param, char* inputFileName, MathObj* obj )
     {
 		ConvertFromOM( inputFileName, obj );
 	}
+	if( par == "mathml" )
+	{
+		MathMLParser A;
+		A.Pars( inputFileName );
+		*obj = *A.GetData( );
+	}
 	
 }
 
