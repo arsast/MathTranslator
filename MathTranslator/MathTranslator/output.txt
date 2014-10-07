@@ -6,30 +6,18 @@
             <OMS cd="arith1" name="divide" />
             <OMA>
                 <OMS cd="multiops" name="plusminus" />
-                <OMA>
-                    <OMS cd="arith1" name="unary_minus" />
-                    <OMV name="b" />
-                </OMA>
+                <OMV name="b" />
                 <OMA>
                     <OMS cd="arith1" name="root" />
                     <OMA>
-                        <OMS cd="arith1" name="minus" />
-                        <OMA>
-                            <OMS cd="arith1" name="power" />
-                            <OMV name="b" />
-                            <OMI>2</OMI>
-                        </OMA>
-                        <OMA>
-                            <OMS cd="arith1" name="times" />
-                            <OMI>4</OMI>
-                            <OMV name="a" />
-                            <OMV name="c" />
-                        </OMA>
+                        <OMS cd="arith1" name="power" />
+                        <OMI>2</OMI>
+                        <OMV name="b" />
                     </OMA>
                 </OMA>
             </OMA>
             <OMA>
-                <OMS cd="arith1" name="times" />
+                <OMS cd="arith2" name="times" />
                 <OMI>2</OMI>
                 <OMV name="a" />
             </OMA>
