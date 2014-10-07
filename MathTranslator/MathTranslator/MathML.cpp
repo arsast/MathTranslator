@@ -152,7 +152,8 @@ void MathMLParser::addElemToData(TiXmlElement* elem, vector<MathObj*>::iterator 
 		elem = elem->FirstChildElement();
 		addElemToData(elem, argPlace);
 		child->params.push_back(NULL);
-		++argPlace;
+		argPlace = child->params.end();
+		--argPlace;
 		elem = elem->NextSiblingElement();
 		addElemToData(elem, argPlace);
 		return;
