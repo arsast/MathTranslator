@@ -1,5 +1,135 @@
 ﻿#include"MathML.h"
 
+void treeBuilder::Push( TiXmlElement* elem )
+{
+	if( uminus )
+	{
+		if( elem->Value() != string( "mo" ) )
+		{
+			FormulaObj* temp = new FormulaObj();
+			temp->SetType( NT_UMINUS );
+			temp->params.push_back( NULL );
+			addArgToData( elem, temp->params.begin() );
+			terms.push( temp );
+			prevIsTerm = true;
+			uminus = false;
+		}
+		else
+		{
+			cout << "error reading unary minus!" << endl;
+		}
+	}
+	else
+	{
+		bool invisibleMult = false;
+		TNodeType operation;
+		if( elem->Value() == string( "mo" ) )
+		{
+			if( prevIsTerm )
+			{
+				operation = readBinarOperation( elem );
+				prevIsTerm = false;
+			}
+			else
+			{
+				if( elem->GetText() == string( "-" ) )
+				{
+					uminus = true;
+				}
+				else
+				{
+					cout << "error reading binary operation!" << endl;
+				}
+				return;
+			}
+		}
+		else
+		{
+			if( prevIsTerm )
+			{
+				operation = NT_MULTCM;
+				invisibleMult = true;
+			}
+			else
+			{
+				terms.push( NULL );
+				elements.push( elem );
+				prevIsTerm = true;
+				return;
+			}
+		}
+		while( operations.size() && !compare( operation, operations.top() ) )
+		{
+			FormulaObj* temp = new FormulaObj();
+			temp->SetType( operations.top() );
+			operations.pop();
+			MathObj* secondArg = terms.top();
+			terms.pop();
+			MathObj* firstArg = terms.top();
+			terms.pop();
+			temp->params.push_back( firstArg );
+			temp->params.push_back( secondArg );
+			if( secondArg == NULL || firstArg == NULL )
+			{
+				vector<MathObj*>::iterator argPlace = temp->params.begin();
+				++argPlace;
+				if( secondArg == NULL )
+				{
+					addArgToData( elements.top(), argPlace );
+					elements.pop();
+				}
+				--argPlace;
+				if( firstArg == NULL )
+				{
+					addArgToData( elements.top(), argPlace );
+					elements.pop();
+				}
+			}
+			terms.push( temp );
+		}
+		operations.push(operation);
+		if( invisibleMult )
+		{
+			terms.push( NULL );
+			elements.push( elem );
+		}
+	}
+}
+
+MathObj* treeBuilder::GetObj()
+{
+	while( operations.size( ) )
+	{
+		FormulaObj* temp = new FormulaObj( );
+		temp->SetType( operations.top( ) );
+		operations.pop( );
+		MathObj* secondArg = terms.top( );
+		terms.pop( );
+		MathObj* firstArg = terms.top( );
+		terms.pop( );
+		temp->params.push_back( firstArg );
+		temp->params.push_back( secondArg );
+		if( secondArg == NULL || firstArg == NULL )
+		{
+			vector<MathObj*>::iterator argPlace = temp->params.begin( );
+			++argPlace;
+			if( secondArg == NULL )
+			{
+				addArgToData( elements.top( ), argPlace );
+				elements.pop( );
+			}
+			--argPlace;
+			if( firstArg == NULL )
+			{
+				addArgToData( elements.top( ), argPlace );
+				elements.pop( );
+			}
+		}
+		terms.push( temp );
+	}
+	return terms.top();
+}
+
 int priority( TNodeType a )
 {
 	switch( a )
@@ -188,14 +318,6 @@ TNodeType readBinarOperation( TiXmlElement* elem )
 	return NT_NOTYPE;
 }
 
-void processElem( stack<TiXmlElement*>* elements, TiXmlElement* elem )
-{
-}
-
-void processOperation( stack<TNodeType>* operations, TiXmlElement* elem )
-{
-}
-
 void MathMLParser::Pars(char* file)
 {
 	TiXmlDocument doc(file);
@@ -214,7 +336,7 @@ void MathMLParser::Pars(char* file)
 	//test(root);
 }
 
-void MathMLParser::addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
+void addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 {
 	if( elem->Value( ) == string( "msqrt" ) )
 	{
@@ -273,125 +395,25 @@ void MathMLParser::addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator 
 	}
 }
 
-void buildTree( TiXmlElement* elem, vector<MathObj*>::iterator place )
+void addRowToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 {
-	stack<TiXmlElement*> elements;
-	stack<TNodeType> operations;
-	TiXmlElement* it = elem->FirstChildElement( );
-	if( it->Value( ) == string( "mo" ) || it->Value( ) == string( "mrow" ) )
+	treeBuilder rowTree;
+	for( elem; elem; elem = elem->NextSiblingElement() )
 	{
-		if( it->Value( ) == string( "mrow" ) )
+		if( elem->Value( ) == string( "mrow" ) )
 		{
-			if( it->FirstChildElement( )->GetText( ) == string( "-" ) )
+			TiXmlElement* subElem = elem->FirstChildElement();
+			for( subElem; subElem; subElem = subElem->NextSiblingElement() )
 			{
-
+				rowTree.Push( subElem );
 			}
 		}
 		else
 		{
-			if( it->GetText( ) == string( "-" ) )
-			{
-
-			}
+			rowTree.Push( elem );
 		}
 	}
-	for( it; it; it = it->NextSiblingElement( ) )
-	{
-		if( it->Value( ) == string( "mo" ) )
-		{
-			operations.push( readBinarOperation( it ) );
-		}
-		else
-		{
-			elements.push( it );
-		}
-	}
-}
-
-void MathMLParser::addRowToData(TiXmlElement* elem, vector<MathObj*>::iterator place)
-{
-	if( elem->Value( ) == string( "mrow" ) || elem->Value( ) == string( "mo" ) )
-	{
-		if( elem->Value() == string( "mo" ) )
-		{
-			if( elem->GetText() == string( "-" ) && !elem->PreviousSibling() )
-			{
-				TiXmlNode* PreviousToParent = elem->Parent( )->PreviousSibling( );
-				if( ( PreviousToParent && PreviousToParent->Value() == string( "mrow" ) ) || !PreviousToParent )
-				{
-					addRowToData( elem->NextSiblingElement(), place);
-				}
-			}
-			//{
-			//	FormulaObj* uMinus = new FormulaObj( );
-			//	uMinus->SetType( NT_UMINUS );
-			//	uMinus->params.push_back( NULL );
-			//	vector<MathObj*>::iterator argUMinus = uMinus->params.begin( );
-			//	elem = elem->NextSiblingElement();
-			//	addArgToData( elem, argUMinus );
-			//}
-			FormulaObj* child = new FormulaObj( );
-			*place = child;
-			child->SetType( readBinarOperation( elem ) );
-			child->params.push_back( NULL );
-			child->params.push_back( NULL );
-			vector<MathObj*>::iterator argPlace = child->params.begin( );
-			TiXmlNode* prev = elem->PreviousSibling();
-			if( prev )
-			{
-				addArgToData( prev->ToElement(), argPlace );
-			}
-			else
-			{
-				TiXmlNode* parent = elem->Parent( );
-				addArgToData( parent->PreviousSibling()->ToElement(), argPlace );
-			}
-			++argPlace;
-			TiXmlElement* nextElem = elem->NextSiblingElement();
-			if( nextElem )
-			{
-				addRowToData( nextElem, argPlace );
-			}
-			else
-			{
-				TiXmlNode* parent = elem->Parent( );
-				addRowToData(parent->NextSiblingElement(),place);
-			}
-		}
-		else
-		{
-			addRowToData( elem->FirstChildElement( ), place );
-			return;
-		}
-	}
-	else
-	{
-		TiXmlElement* nextElem = elem->NextSiblingElement();
-		if( nextElem )
-		{
-			if( nextElem->Value() != string("mo") )
-			{
-				FormulaObj* child = new FormulaObj( );
-				*place = child;
-				child->SetType( NT_MULTCM );
-				child->params.push_back( NULL );
-				child->params.push_back( NULL );
-				vector<MathObj*>::iterator argPlace = child->params.begin( );
-				addArgToData( elem, argPlace );
-				++argPlace;
-				addRowToData( nextElem, argPlace );
-			}
-			else
-			{
-				addRowToData( nextElem, place );
-			}
-		}
-		else
-		{
-			addArgToData( elem, place );
-		}
-	}
-	return;
+	*place = rowTree.GetObj();
 }
 
 void MathMLParser::test(MathObj* temp)

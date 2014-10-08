@@ -12,8 +12,6 @@ class MathMLParser
 {
 private:
 	MathObj* root;
-	void addRowToData(TiXmlElement* elem, vector<MathObj*>::iterator place);
-	void addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place );
 	void test(MathObj* temp);
 public:
 	void SetData(MathObj* newRoot){ root = newRoot; }
@@ -22,3 +20,25 @@ public:
 	void ConvertToMML(char* outputFile){};
 	void ConvertFromMML(){};
 };
+
+class treeBuilder
+{
+	stack<TiXmlElement*> elements;
+	stack<TNodeType> operations;
+	stack<MathObj*> terms;
+	bool prevIsTerm = false;
+	bool uminus = false;
+public:
+	MathObj* GetObj( );
+	void Push( TiXmlElement* elem );
+};
+
+int priority( TNodeType a );
+
+bool compare( TNodeType a, TNodeType b );
+
+TNodeType readBinarOperation( TiXmlElement* elem );
+
+void addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place );
+
+void addRowToData( TiXmlElement* elem, vector<MathObj*>::iterator place );
