@@ -315,6 +315,30 @@ TNodeType readBinarOperation( TiXmlElement* elem )
 	{
 		return NT_EQUAL;
 	}
+	if( id == "<" )
+	{
+		return NT_LESS;
+	}
+	if( id == ">" )
+	{
+		return NT_GREAT;
+	}
+	if( id == "≈" )
+	{
+		return NT_APPROX;
+	}
+	if( id == "\leqslant" || id == "\leq" )
+	{
+		return NT_LESSEQ;
+	}
+	if( id == "\geqslant" || id == "\geq" )
+	{
+		return NT_GREATEQ;
+	}
+	if( id == "≠" )
+	{
+		return NT_NEQUAL;
+	}
 	return NT_NOTYPE;
 }
 
