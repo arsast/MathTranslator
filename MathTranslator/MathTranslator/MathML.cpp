@@ -418,16 +418,19 @@ void addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 	}
 	if( elem->Value() == string( "mfenced" ) )
 	{
+		TiXmlElement* childElem = elem->FirstChildElement( );
 		if( elem->Attribute( "open" ) == string( "|" ) && elem->Attribute( "close" ) == string( "|" ) )
 		{
 			FormulaObj* child = new FormulaObj( );
 			*place = child;
 			child->SetType( NT_ABS );
 			child->params.push_back( NULL );
-			place = child->params.begin( );
+			addRowToData( childElem, child->params.begin( ) );
 		}
-		TiXmlElement* childElem = elem->FirstChildElement( );
-		addRowToData( childElem, place );
+		else
+		{
+			addRowToData( childElem, place );
+		}
 		return;
 	}
 }
@@ -450,5 +453,9 @@ void addRowToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 			rowTree.Push( elem );
 		}
 	}
-	*place = rowTree.GetObj();
+	*place = rowTree.GetObj( );
+	if( *place == NULL )
+	{
+		addArgToData( rowTree.GetArg( ), place );
+	}
 }

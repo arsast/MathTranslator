@@ -68,7 +68,7 @@ int main( int argc, char* argv[] )
 	argv[1] = "mathml";
 	argv[2] = "inputMML.txt";
 	argv[3] = "omath";
-	argv[4] = "inputOM.txt";
+	argv[4] = "output.txt";
 	if( argc != 5 ) {
 		std::cout << "nevernoe kolichestvo parametrov!" << std::endl;
 		system( "pause" );

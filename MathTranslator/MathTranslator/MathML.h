@@ -26,7 +26,9 @@ class treeBuilder
 	bool prevIsTerm = false;
 	bool uminus = false;
 public:
+	bool IsTree(){ return terms.top(); }
 	MathObj* GetObj( );
+	TiXmlElement* GetArg(){ return elements.top(); }
 	void Push( TiXmlElement* elem );
 };
 
