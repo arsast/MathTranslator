@@ -348,7 +348,7 @@ void MathMLParser::Pars(char* file)
 	bool loadOkay = doc.LoadFile();
 	if (!loadOkay)
 	{
-		cout << "Failed to load file\n";
+		cout << "Failed to load MML-file\n";
 	}
 	TiXmlElement *elem = doc.FirstChildElement();
 	elem = elem->FirstChildElement();
@@ -357,7 +357,6 @@ void MathMLParser::Pars(char* file)
 	((FormulaObj*)root)->params.push_back(NULL);
 	vector<MathObj*>::iterator place = ((FormulaObj*)root)->params.begin();
 	addArgToData(elem, place);
-	//test(root);
 }
 
 void addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
@@ -411,8 +410,22 @@ void addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 		arg->SetVal( elem->GetText() );
 		return;
 	}
-	if( elem->Value() == string( "mrow" ) )
+	if( elem->Value( ) == string( "mrow" ) )
 	{
+		TiXmlElement* childElem = elem->FirstChildElement( );
+		addRowToData( childElem, place );
+		return;
+	}
+	if( elem->Value() == string( "mfenced" ) )
+	{
+		if( elem->Attribute( "open" ) == string( "|" ) && elem->Attribute( "close" ) == string( "|" ) )
+		{
+			FormulaObj* child = new FormulaObj( );
+			*place = child;
+			child->SetType( NT_ABS );
+			child->params.push_back( NULL );
+			place = child->params.begin( );
+		}
 		TiXmlElement* childElem = elem->FirstChildElement( );
 		addRowToData( childElem, place );
 		return;
@@ -438,23 +451,4 @@ void addRowToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 		}
 	}
 	*place = rowTree.GetObj();
-}
-
-void MathMLParser::test(MathObj* temp)
-{
-	std::string objType = typeid(temp).name();
-	std::cout << objType.c_str() << " ";
-	if (objType == "class FormulaObj")
-	{
-		std::vector<MathObj*>::iterator it;
-		for (it = ((FormulaObj*)temp)->params.begin(); it != ((FormulaObj*)temp)->params.end(); ++it)
-		{
-			test(*it);
-		}
-	}
-	else
-	{
-		cout << ((ParamObj*)temp)->GetVal();
-	}
-	cout << endl;
 }

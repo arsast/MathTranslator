@@ -12,13 +12,10 @@ class MathMLParser
 {
 private:
 	MathObj* root;
-	void test(MathObj* temp);
 public:
 	void SetData(MathObj* newRoot){ root = newRoot; }
 	MathObj* GetData(){ return root; }
 	void Pars(char* file);
-	void ConvertToMML(char* outputFile){};
-	void ConvertFromMML(){};
 };
 
 class treeBuilder
