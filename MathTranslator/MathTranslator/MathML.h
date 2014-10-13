@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "MathFormObj.h"
 #include "targetver.h"
 #include "tinystr.h"
@@ -16,6 +16,7 @@ public:
 	void SetData(MathObj* newRoot){ root = newRoot; }
 	MathObj* GetData(){ return root; }
 	void Pars(char* file);
+    void Save( char* file );
 };
 
 class treeBuilder
@@ -41,3 +42,7 @@ TNodeType readBinarOperation( TiXmlElement* elem );
 void addArgToData( TiXmlElement* elem, vector<MathObj*>::iterator place );
 
 void addRowToData( TiXmlElement* elem, vector<MathObj*>::iterator place );
+
+void saveTreeToXml( TiXmlElement*, MathObj*, bool ); // преобразует дерево разбора в xml документ, начиная с определенной вершины
+
+void linkNewElem( TiXmlElement*, const char*, std::string* ); // добавляет в xml документе новый элемент с заданным тегом и значением

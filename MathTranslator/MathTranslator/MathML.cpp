@@ -459,3 +459,177 @@ void addRowToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 		addArgToData( rowTree.GetArg( ), place );
 	}
 }
+
+
+void MathMLParser::Save( char* outputFileName )
+{
+    TiXmlDocument doc;
+    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
+    doc.LinkEndChild( decl ); //создали декларационную часть xml документа
+    
+    MathObj* obj = root;
+    if( static_cast< FormulaObj* >( obj )->GetType() != NT_MAIN )
+    {
+        std::cerr << "Ошибка построения дерева разбора: Корень должен быть NT_MAIN!" << std::endl;
+        return;
+    }
+    
+    TiXmlElement* element = new TiXmlElement( "math" );
+    element->SetAttribute( "xmlns", "http://www.w3.org/1998/Math/MathML" );
+    doc.LinkEndChild( element ); //создали главную часть, в которой записана формула
+    saveTreeToXml( element, static_cast< FormulaObj* >( obj )->params[0], true );
+
+    doc.SaveFile( outputFileName );
+}
+
+void linkNewElem( TiXmlElement* parent, const char* param, const char* val )
+{
+    TiXmlElement* element = new TiXmlElement( param );
+    element->SetValue( val );
+    parent->LinkEndChild( element );
+}
+
+void saveTreeToXml( TiXmlElement* pElem, MathObj* obj, bool isNewRow )
+{
+    if( isNewRow ) {
+        TiXmlElement* element = new TiXmlElement( "mrow" );
+        pElem->LinkEndChild( element );
+        pElem = element;
+        isNewRow = false;
+    }
+
+    std::string objType = typeid( *obj ).name();
+
+    if( objType == "class ParamObj" ) 
+    {
+        std::string val = static_cast< ParamObj* >( obj )->GetVal();
+        if( val[0] < 48 || val[0] > 57 ) // если значение начинается с буквы, то - идентификатор 
+        {
+            linkNewElem( pElem, "mi", val.c_str() );
+        }
+        else {
+            linkNewElem( pElem, "mn", val.c_str() );
+        }
+    }
+    else if( objType == "class FormulaObj" )
+    {
+        FormulaObj* node = static_cast< FormulaObj* >( obj );
+        TNodeType type = node->GetType();
+        std::vector<MathObj*>::iterator it = node->params.begin( );
+        std::vector<MathObj*>::const_iterator itLast = node->params.end( ) - 1;
+        TiXmlElement* element;
+
+        switch( type )
+        {
+        case NT_PLUS:
+            for( it; it != itLast; ++it )
+            {
+                saveTreeToXml( pElem, *it, isNewRow );
+                linkNewElem( pElem, "mo", "+" );
+            }
+            saveTreeToXml( pElem, *it, isNewRow );
+            break;
+
+        case NT_UMINUS:
+            linkNewElem( pElem, "mo", "-" );
+            saveTreeToXml( pElem, *it, isNewRow );
+            break;
+            
+        case NT_MINUS:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "-" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_MULTNCM: // TODO поправить в будущем, пока как обычное умножение
+            for( it; it != itLast; ++it )
+            {
+                saveTreeToXml( pElem, *it, isNewRow );
+            }
+            saveTreeToXml( pElem, *it, isNewRow );
+            break;
+
+        case NT_DIV:
+            element = new TiXmlElement( "mfrac" );
+            pElem->LinkEndChild( element );
+            saveTreeToXml( element, *it, true );
+            saveTreeToXml( element, *itLast, true );
+            break;
+
+        case NT_POW:
+            element = new TiXmlElement( "msup" );
+            pElem->LinkEndChild( element );
+            saveTreeToXml( element, *it, false );
+            saveTreeToXml( element, *itLast, false );
+            break;
+
+        case NT_ROOT:
+            if( itLast == it )
+            {
+                element = new TiXmlElement( "msqrt" );
+                pElem->LinkEndChild( element );
+                saveTreeToXml( element, *it, false );
+            }
+            break;
+
+        case NT_MULTCM:
+            for( it; it != itLast; ++it )
+            {
+                saveTreeToXml( pElem, *it, isNewRow );
+            }
+            saveTreeToXml( pElem, *it, isNewRow );
+            break;
+
+        case NT_EQUAL:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "=" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_LESS:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "<" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_GREAT:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", ">" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_NEQUAL:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "≠" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_LESSEQ:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "\leq" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_GREATEQ:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "\geq" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_APPROX:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "≈" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        case NT_PLUSMINUS:
+            saveTreeToXml( pElem, *it, isNewRow );
+            linkNewElem( pElem, "mo", "±" );
+            saveTreeToXml( pElem, *itLast, isNewRow );
+            break;
+
+        default:
+            std::cerr << "Ошибка, не поддерживаемый (пока) тип оператора, код: " << type << std::endl;
+        }
+    }
+}

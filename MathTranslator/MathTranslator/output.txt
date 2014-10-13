@@ -1,44 +1,28 @@
-<OMOBJ xmlns="http://www.openmath.org/OpenMath">
-    <OMA>
-        <OMS cd="relation1" name="eq" />
-        <OMA>
-            <OMS cd="arith1" name="abs" />
-            <OMV name="x" />
-        </OMA>
-        <OMA>
-            <OMS cd="arith1" name="divide" />
-            <OMA>
-                <OMS cd="multiops" name="plusminus" />
-                <OMA>
-                    <OMS cd="arith1" name="unary_minus" />
-                    <OMV name="b" />
-                </OMA>
-                <OMA>
-                    <OMS cd="arith1" name="root" />
-                    <OMA>
-                        <OMS cd="arith1" name="minus" />
-                        <OMA>
-                            <OMS cd="arith1" name="power" />
-                            <OMV name="b" />
-                            <OMI>2</OMI>
-                        </OMA>
-                        <OMA>
-                            <OMS cd="arith2" name="times" />
-                            <OMA>
-                                <OMS cd="arith2" name="times" />
-                                <OMI>4</OMI>
-                                <OMV name="a" />
-                            </OMA>
-                            <OMV name="c" />
-                        </OMA>
-                    </OMA>
-                </OMA>
-            </OMA>
-            <OMA>
-                <OMS cd="arith2" name="times" />
-                <OMI>2</OMI>
-                <OMV name="a" />
-            </OMA>
-        </OMA>
-    </OMA>
-</OMOBJ>
+<?xml version="1.0" ?>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow>
+        <x />
+        <= />
+        <mfrac>
+            <mrow>
+                <- />
+                <b />
+                <± />
+                <msqrt>
+                    <msup>
+                        <b />
+                        <2 />
+                    </msup>
+                    <- />
+                    <4 />
+                    <a />
+                    <c />
+                </msqrt>
+            </mrow>
+            <mrow>
+                <2 />
+                <a />
+            </mrow>
+        </mfrac>
+    </mrow>
+</math>

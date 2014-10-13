@@ -13,7 +13,9 @@ void MTConvert( char* inputParam, char* inputFileName, char* outputParam, char* 
 {
 	FormulaObj obj( NT_MAIN );
 	MathMLParser mmlparser;
+
 	std::string inputPar( inputParam );
+
 	if( inputPar == "omath" )
 	{
 		ConvertFromOM( inputFileName, &obj );
@@ -34,47 +36,52 @@ void MTConvert( char* inputParam, char* inputFileName, char* outputParam, char* 
 			ConvertToOM( outputFileName, mmlparser.GetData() );
 		}
 	}
+    if( outputPar == "mathml" )
+    {
+        if( inputPar == "omath" )
+        {
+            mmlparser.SetData( &obj );
+            mmlparser.Save( outputFileName );
+        }
+        if( inputPar == "mathml" )
+            mmlparser.Save( outputFileName );
+    }
 }
 
-void MTRead( char* param, char* inputFileName, MathObj* obj ) 
-{
-	std::string par( param );
-	if( par == "omath" ) 
-    {
-		ConvertFromOM( inputFileName, obj );
-	}
-	if( par == "mathml" )
-	{
-		MathMLParser A;
-		A.Pars( inputFileName );
-		*obj = *A.GetData( );
-	}
-	
-}
+//void MTRead( char* param, char* inputFileName, MathObj* obj ) 
+//{
+//	std::string par( param );
+//	if( par == "omath" ) 
+//    {
+//		ConvertFromOM( inputFileName, obj );
+//	}
+//	if( par == "mathml" )
+//	{
+//		MathMLParser* A = new MathMLParser();
+//		A->Pars( inputFileName );
+//		obj = A->GetData( );
+//	}
+//	
+//}
 
-void MTWrite( char* param, char* outputFileName, MathObj* obj ) 
-{
-	std::string par( param );
-	if( par == "omath" ) 
-    {
-		ConvertToOM( outputFileName, obj );
-	}
-}
+//void MTWrite( char* param, char* outputFileName, MathObj* obj ) 
+//{
+//	std::string par( param );
+//	if( par == "omath" ) 
+//    {
+//		ConvertToOM( outputFileName, obj );
+//	}
+//}
 
 
 int main( int argc, char* argv[] ) 
 {
-	argc = 5;
-	argv[1] = "mathml";
-	argv[2] = "inputMML.txt";
-	argv[3] = "omath";
-	argv[4] = "output.txt";
 	if( argc != 5 ) {
 		std::cout << "nevernoe kolichestvo parametrov!" << std::endl;
 		system( "pause" );
 		return 0;
 	}
-	MTConvert( argv[1], argv[2], argv[3], argv[4] );
+    MTConvert( argv[1], argv[2], argv[3], argv[4] );
 
 	system( "pause" );
 	return 0;
