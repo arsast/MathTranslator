@@ -464,7 +464,7 @@ void addRowToData( TiXmlElement* elem, vector<MathObj*>::iterator place )
 void MathMLParser::Save( char* outputFileName )
 {
     TiXmlDocument doc;
-    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
+    TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "UTF-8", "" );
     doc.LinkEndChild( decl ); //создали декларационную часть xml документа
     
     MathObj* obj = root;
@@ -485,7 +485,8 @@ void MathMLParser::Save( char* outputFileName )
 void linkNewElem( TiXmlElement* parent, const char* param, const char* val )
 {
     TiXmlElement* element = new TiXmlElement( param );
-    element->SetValue( val );
+    TiXmlText* text = new TiXmlText( val );
+    element->LinkEndChild( text );
     parent->LinkEndChild( element );
 }
 
